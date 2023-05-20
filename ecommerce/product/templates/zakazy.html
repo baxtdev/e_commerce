@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    
+    
+</head>
+<body>
+
+{% if orderitem %}    
+  {% for el in orderitem %}
+    pol: {{el.user}}  <br>
+    prod: {{el.product}}  <br>
+    price: {{el.product.price}}  <br>
+    col: {{el.quantity}}<br> 
+    <span>
+        zakazy_______|
+    </span>
+    <br>
+    <br>
+    <br>
+    <br>
+  {% endfor %}  
+
+  {% for element in order %}
+    user:--{{element.user}}<br>
+    <h1>
+        items 
+     </h1>
+    {% for names in element.items.all %}
+    
+        prod:{{names.product}}-col:{{names.quantity}}<br><br><br>
+    {% endfor %}
+    date:--{{element.ordered_date}}<br>
+    adress:--{{element.shipping_address}}<br>
+    paymet:--{{element.payment}}<br>
+    total:--{{element.get_total}}                <br>
+  {% endfor %}
+
+  {% else %}
+  <h4>
+    страница пусто
+  </h4>
+  {% endif %}
+</body>
+</html>

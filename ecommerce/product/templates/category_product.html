@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+<body>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+    </div>
+    {% if category.product.all %}
+     {% for el in category.product.all  %}
+     <a href="{% url 'product-values' id=el.id %}"><h1>
+        Producte:{{el.title}}
+    </h1></a>
+     {% endfor %}
+     {% else %}
+        <p>Это страница пусто</p>
+    {% endif %}   
+
+
+</body>
+</html>
