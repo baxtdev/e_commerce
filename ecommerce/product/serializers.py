@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 #product serializers
 class ProducteSerializer(serializers.ModelSerializer):
-    # author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Producte
         fields ="__all__" 
@@ -49,11 +49,15 @@ class AtributeSerializer(serializers.ModelSerializer):
         # ('title','value','products')
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    user =  serializers.HiddenField(default=serializers.CurrentUserDefault())
+    
     class Meta:
         model = OrderItem
         fields = "__all__"       
 
 class OrderSerializer(serializers.ModelSerializer):
+    user =  serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Order
         fields = "__all__"       

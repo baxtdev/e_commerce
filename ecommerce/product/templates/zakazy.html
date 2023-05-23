@@ -9,26 +9,9 @@
     
 </head>
 <body>
-
-{% if orderitem %}    
-  {% for el in orderitem %}
-    pol: {{el.user}}  <br>
-    prod: {{el.product}}  <br>
-    price: {{el.product.price}}  <br>
-    col: {{el.quantity}}<br> 
-    <span>
-        zakazy_______|
-    </span>
-    <br>
-    <br>
-    <br>
-    <br>
-  {% endfor %}  
-
   {% for element in order %}
-    user:--{{element.user}}<br>
     <h1>
-        items 
+        Корзинка || user:--{{element.user}}
      </h1>
     {% for names in element.items.all %}
     
@@ -39,7 +22,8 @@
     paymet:--{{element.payment}}<br>
     total:--{{element.get_total}}                <br>
   {% endfor %}
-
+  {% if orderitem %}    
+  
   {% else %}
   <h4>
     страница пусто

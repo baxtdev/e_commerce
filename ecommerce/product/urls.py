@@ -29,17 +29,15 @@ urlpatterns = [
     path('auth/login/', LoginAPI.as_view(), name='login'),
     path('auth/logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('auth/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
-
-
-]
+    # path ('shoping/<int:id>/:atribute/', detail_product, name='product-values'),
+    # path('shoping_cat/product/<int:id>',detail_category, name='detail-cat' ),
+    # path('shopping/all/', all_products, name='all-products'),
+    # path('home/',index,name='home'),
+    # path('shoping_zakazy/', zakaz, name='zakazy')
+    ]
 
 
 #swagger urls
 urlpatterns+=doc_url
 
-#template tags
-#path ('product/<int:id>/:atribute/', detail_product, name='product-values'),
-# path('cat/product/<int:id>',detail_category, name='detail-cat' ),
-# path('products/all/', all_products, name='all-products'),
-#  path('home/',index,name='home'),
-# path('zakazy/', zakaz, name='zakazy')
+

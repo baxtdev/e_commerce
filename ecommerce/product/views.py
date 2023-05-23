@@ -1,4 +1,3 @@
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from knox.models import AuthToken
 from rest_framework import generics , permissions
@@ -7,12 +6,15 @@ from .models import*
 from product.serializers import*
 from rest_framework.viewsets import ModelViewSet
 from product.pagination import ProductAPIListPagination
-
+from rest_framework.permissions import AllowAny,IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.auth import login
+from .permissons import IsOwnerOrReadOnly
 
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
+
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -42,7 +44,50 @@ class LoginAPI(KnoxLoginView):
 
 
 
-#home functions
+
+
+#API Products
+class ProducteModelViewSet(ModelViewSet):
+    queryset = Producte.objects.all()
+    serializer_class = ProducteSerializer
+    permission_classes = (IsOwnerOrReadOnly, ) 
+
+    pagination_class = ProductAPIListPagination
+    # authentication_classes = (TokenAuthentication ,) 
+
+#API Category
+class CategoryModelViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (IsOwnerOrReadOnly, )  
+
+
+#API Atribute
+class AtributeModelViewSet(ModelViewSet):
+    queryset = Atribute.objects.all()
+    serializer_class = AtributeSerializer
+    permission_classes = (IsOwnerOrReadOnly, ) 
+
+#API Photo
+class PhotoModelViewSet(ModelViewSet):
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
+    permission_classes = (IsOwnerOrReadOnly, )
+
+class OrderItemModelViewSet(ModelViewSet):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    permission_classes = (IsOwnerOrReadOnly, )
+
+class OrderModelViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (IsOwnerOrReadOnly, )
+
+# Create your views here.
+
+
+
 def index(request):
     product= Producte.objects.all()
     categoory = Category.objects.all()
@@ -104,45 +149,3 @@ def zakaz(request):
         'orderitem' : orderitem,
     }
     return render(request, 'zakazy.html',context)    
-
-
-#API Products
-class ProducteModelViewSet(ModelViewSet):
-    queryset = Producte.objects.all()
-    serializer_class = ProducteSerializer
-    permission_classes = (IsAuthenticated, ) 
-    pagination_class = ProductAPIListPagination
-    # authentication_classes = (TokenAuthentication ,) 
-
-#API Category
-class CategoryModelViewSet(ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = (IsAuthenticated, )  
-
-
-#API Atribute
-class AtributeModelViewSet(ModelViewSet):
-    queryset = Atribute.objects.all()
-    serializer_class = AtributeSerializer
-    permission_classes = (IsAuthenticated, ) 
-
-#API Photo
-class PhotoModelViewSet(ModelViewSet):
-    queryset = Photo.objects.all()
-    serializer_class = PhotoSerializer
-    permission_classes = (IsAuthenticated, )
-
-class OrderItemModelViewSet(ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
-    permission_classes = (IsAuthenticated, )
-
-class OrderModelViewSet(ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = (IsAuthenticated, )
-
-# Create your views here.
-
-

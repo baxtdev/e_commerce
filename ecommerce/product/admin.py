@@ -57,8 +57,8 @@ class OrderItemInline(admin.TabularInline):
 
 class ProducteAdmin(admin.ModelAdmin):
     inlines=[AtributeInline, PhotoInline ]    
-    list_display = ("title", "category", "author")
-    list_display_links = ("title", "category", "author")
+    list_display = ("title", "category", "user")
+    list_display_links = ("title", "category", "user")
 
 
 

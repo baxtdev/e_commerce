@@ -14,8 +14,8 @@ STATIT_CHOICE=[
 ]
 #категоории продукта
 class Category(models.Model):
-    title = models.CharField(max_length=200)
-    description = RichTextUploadingField()
+    title = models.CharField(max_length=200, verbose_name="Название категории")
+    description = RichTextUploadingField(verbose_name="описание Категории")
 
     def __str__(self) -> str:
         return self.title
@@ -27,8 +27,8 @@ class Category(models.Model):
 
 #атрибуты продукта
 class Atribute(models.Model):
-    title = models.CharField(max_length=150)
-    value = models.CharField(max_length=50)
+    title = models.CharField(max_length=150, verbose_name="Атрибут")
+    value = models.CharField(max_length=50, verbose_name="Значение")
     products = models.ForeignKey('Producte',on_delete=models.CASCADE,related_name="prod_atrib",null=True)
     
     def __str__(self) -> str:
@@ -42,12 +42,12 @@ class Atribute(models.Model):
 
 #сам продукт
 class Producte(models.Model):
-    title =models.CharField(max_length=300)
-    description = models.CharField(max_length=150)
-    content = RichTextUploadingField()
-    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="product")
-    price = models.IntegerField(default=1)
-    author = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    title =models.CharField(max_length=300, verbose_name="Название Продукта")
+    description = models.CharField(max_length=150, verbose_name="описание Продукта")
+    content = RichTextUploadingField(verbose_name="содержание продукта")
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="product", verbose_name="Категория продукта")
+    price = models.IntegerField(default=1, verbose_name="Цена продукта")
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, verbose_name="Создатель продукта или автор")
 
 
     def __str__(self) -> str:
@@ -60,8 +60,8 @@ class Producte(models.Model):
 
 #фотографии продукта
 class Photo(models.Model):
-    photo = ResizedImageField(upload_to='media/images/', force_format='WEBP', quality=90)
-    product = models.ForeignKey('Producte',on_delete=models.CASCADE, related_name='photos')
+    photo = ResizedImageField(upload_to='media/images/', force_format='WEBP', quality=90, verbose_name="Фото продукта")
+    product = models.ForeignKey('Producte',on_delete=models.CASCADE, related_name='photos',verbose_name="Продукт")
 
 
     def __str__(self) -> str:
@@ -74,12 +74,13 @@ class Photo(models.Model):
 
 
 
+
 class OrderItem(models.Model):
-    order = models.ForeignKey('Order',on_delete=models.SET_NULL, null=True ,related_name='items')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=User,verbose_name='Клиент')
+    order = models.ForeignKey('Order',on_delete=models.CASCADE, null=True ,related_name='items', verbose_name="Заказы" )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=User, verbose_name='Клиент')
     product = models.ForeignKey(Producte, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.IntegerField(default=1, verbose_name='Кол-во товаров')
-    status = models.CharField(null=True, default='null',max_length=2, choices=STATIT_CHOICE, )
+    status = models.CharField(null=True, default='null',max_length=2, choices=STATIT_CHOICE, verbose_name="Статус заказа" )
     
     def __str__(self):
         return f"Кол-во: {self.quantity}, заказ: {self.product.title}, пользователь {self.user}"
@@ -87,7 +88,7 @@ class OrderItem(models.Model):
     @property
     def get_total_item_price(self):
         return self.quantity * self.product.price
-
+    
     
     class Meta:
         verbose_name = 'Карточка заказа'
@@ -115,7 +116,7 @@ class Order(models.Model):
     def get_total(self):
         total = 0
         for order_item in self.items.all():
-            total += order_item.get_total_item_price()
+            total += order_item.get_total_item_price
 
         return total    
 
