@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 #product serializers
 class ProducteSerializer(serializers.ModelSerializer):
-    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Producte
         fields ="__all__" 
