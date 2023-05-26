@@ -26,7 +26,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 #product serializers
 class ProducteSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    photo = 'PhotoSerializer'
+
     class Meta:
         model = Producte
         fields =('title','description','price','category','user', 'photo') 
