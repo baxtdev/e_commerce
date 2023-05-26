@@ -46,7 +46,7 @@ class PhotoSerializer(serializers.ModelSerializer):
 class AtributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Atribute
-        fields = ('product','title', 'value',)
+        fields = ('products','title', 'value',)
         # ('title','value','products')
 
 class OrderItemSerializer(serializers.ModelSerializer):
