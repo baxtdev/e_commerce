@@ -57,8 +57,14 @@ class OrderItemInline(admin.TabularInline):
 
 class ProducteAdmin(admin.ModelAdmin):
     inlines=[AtributeInline, PhotoInline ]    
-    list_display = ("title", "category", "user")
+    readonly_fields = ('get_image' ,)
+    list_display = ("title", "category", "user","get_image")
     list_display_links = ("title", "category", "user")
+    
+    @admin.display(description='image')
+    def get_image(self, instance):
+        return mark_safe(f'<img src="{instance.photo.url}" width="50px" ')
+
 
 
 

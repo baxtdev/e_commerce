@@ -6,7 +6,7 @@ from .models import*
 from product.serializers import*
 from rest_framework.viewsets import ModelViewSet
 from product.pagination import ProductAPIListPagination
-from rest_framework.permissions import AllowAny,IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import login
 from .permissons import IsOwnerOrReadOnly
 
@@ -59,20 +59,20 @@ class ProducteModelViewSet(ModelViewSet):
 class CategoryModelViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsOwnerOrReadOnly, )  
+    permission_classes = (IsAuthenticatedOrReadOnly, )  
 
 
 #API Atribute
 class AtributeModelViewSet(ModelViewSet):
     queryset = Atribute.objects.all()
     serializer_class = AtributeSerializer
-    permission_classes = (IsOwnerOrReadOnly, ) 
+    permission_classes = (IsAuthenticatedOrReadOnly, ) 
 
 #API Photo
 class PhotoModelViewSet(ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 class OrderItemModelViewSet(ModelViewSet):
     queryset = OrderItem.objects.all()
