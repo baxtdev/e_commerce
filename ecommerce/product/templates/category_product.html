@@ -14,8 +14,8 @@
           </li>
         </ul>
     </div>
-    {% if category.product.all %}
-     {% for el in category.product.all  %}
+    {% if category.products.all %}
+     {% for el in category.products.all  %}
      <a href="{% url 'product-values' id=el.id %}"><h1>
         Producte:{{el.title}}
     </h1></a>

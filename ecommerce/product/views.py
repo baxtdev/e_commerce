@@ -3,17 +3,15 @@ from knox.models import AuthToken
 from rest_framework import generics , permissions
 from django.shortcuts import render
 from .models import*
-from product.serializers import*
+from .serializers import*
 from rest_framework.viewsets import ModelViewSet
 from product.pagination import ProductAPIListPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import login
 from .permissons import IsOwnerOrReadOnly
-
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
-
 
 
 # Register API
@@ -77,7 +75,7 @@ class PhotoModelViewSet(ModelViewSet):
 class OrderItemModelViewSet(ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 class OrderModelViewSet(ModelViewSet):
     queryset = Order.objects.all()
@@ -149,3 +147,5 @@ def zakaz(request):
         'orderitem' : orderitem,
     }
     return render(request, 'zakazy.html',context)    
+
+

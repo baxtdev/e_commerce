@@ -2,8 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 from .models import Producte,Atribute,Category,Photo,Order,OrderItem
-
-
+ 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,14 +22,67 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = ('id','photo', 'product')
+
+class AtributeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Atribute
+        fields = ('id','title', 'value','product',)
+        # ('title','value','products')
+
 #product serializers
 class ProducteSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    atributes = AtributeSerializer(many=True)
+    photos = PhotoSerializer(many=True, )
 
     class Meta:
         model = Producte
-        fields =('title','description','price','category','user', 'photo') 
-        # ('title','description','content','category')
+        fields =('id','title','description','price','category','user','atributes','photos') 
+        
+    def create(self, validated_data):
+        atributes_data = validated_data.pop('atributes', [])
+        photos_data = validated_data.pop('photos', [])
+
+        product = Producte.objects.create(**validated_data)
+
+        for atribute_data in atributes_data:
+            Atribute.objects.create(product=product, **atribute_data)
+
+        for photo_data in photos_data:
+            Photo.objects.create(product=product, **photo_data)
+
+        return product
+    
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.price = validated_data.get('price', instance.price)
+        instance.category = validated_data.get('category', instance.category)
+
+        # Update nested serializers (attributes and photos)
+        atributes_data = validated_data.get('atributes')
+        if atributes_data:
+            instance.atributes.all().delete()
+            for atribute_data in atributes_data:
+                instance.atributes.create(**atribute_data)
+        
+        photos_data = validated_data.get('photos')
+        if photos_data:
+            instance.photos.all().delete()
+            for photo_data in photos_data:
+                instance.photos.create(**photo_data)
+
+        instance.save()
+        return instance
+
+        
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,30 +90,39 @@ class CategorySerializer(serializers.ModelSerializer):
         fields ="__all__" 
         # ('title','description')
 
-class PhotoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Photo
-        fields = ('photo', 'product')
-
-class AtributeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Atribute
-        fields = ('products','title', 'value',)
-        # ('title','value','products')
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    user =  serializers.HiddenField(default=serializers.CurrentUserDefault())
-    
+
     class Meta:
         model = OrderItem
-        fields = "__all__"       
+        fields = ("id","order","product","quantity","status","get_total_item_price")       
+
+
 
 class OrderSerializer(serializers.ModelSerializer):
     user =  serializers.HiddenField(default=serializers.CurrentUserDefault())
-    
+    items = OrderItemSerializer(many=True)
     class Meta:
         model = Order
-        fields = "__all__"       
+        fields = ("id","ordered_date","shipping_address","payment","items","user","get_total")       
+    
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        
+        for order_item_data in items_data:
+            OrderItem.objects.create(order=order, **order_item_data)
+        
+        return order
 
+    def update(self, instance, validated_data):
+        items_data = validated_data.pop('items', [])
+        instance.customer = validated_data.get('user', instance.user)
+        
+        # Update or create order items
+        instance.items.all().delete()
+        for item_data in items_data:
+            OrderItem.objects.create(order=instance, **item_data)
 
-
+        instance.save()
+        return instance

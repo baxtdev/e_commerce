@@ -7,11 +7,14 @@ from django import forms
 from .import models
 from .models import STATIT_CHOICE
 
+
+
 admin.site.site_title= 'Онлайн магазин'
 admin.site.site_header= 'Все продукты для вас'
 
 
-# Register your models here.
+
+#forms
 class AtributeInlineForm(forms.ModelForm):
     title = forms.CharField(max_length=150)
     value = forms.CharField(max_length=50)
@@ -20,33 +23,39 @@ class AtributeInlineForm(forms.ModelForm):
         fields = ('title','value')
 
 
+
 class PhotoInlineForm(forms.ModelForm):
     photo = forms.ImageField()
     class Meta:
         model = models.Photo
         fields = ("photo",)
 
-all_users = User.objects.all()
-product = Producte.objects.all()
+
 
 class OrderItemInlineForm(forms.ModelForm):
-    user = forms.ModelChoiceField(queryset=all_users)
-    product = forms.ModelChoiceField(queryset=product)
-    quantity =forms.IntegerField()
+    products = Producte.objects.all()
+    #form для ordera
+    product = forms.ModelChoiceField(queryset=products)
+    quantity =forms.IntegerField(initial=1)
     status = forms.ChoiceField(choices=STATIT_CHOICE)
     class Meta:
         model = models.OrderItem
-        fields = ("user" , "product" ,"quantity")
+        fields = ( "product" ,"quantity","status")
 
+#inlines
 class AtributeInline(admin.TabularInline):
     model = models.Atribute
     form = AtributeInlineForm
     extra = 3
 
+
+
 class PhotoInline(admin.TabularInline):
     model = models.Photo
     form = PhotoInlineForm
     extra = 6
+
+
 
 class OrderItemInline(admin.TabularInline):
     model =OrderItem
@@ -58,30 +67,31 @@ class OrderItemInline(admin.TabularInline):
 class ProducteAdmin(admin.ModelAdmin):
     inlines=[AtributeInline, PhotoInline ]    
     readonly_fields = ('get_image' ,)
-    list_display = ("title", "category", "user","get_image")
-    list_display_links = ("title", "category", "user")
+    list_display = ("title", "category", "user",)#"photo","get_image"
+    list_display_links = ("title", "category", "user",)#"photo"
     
     @admin.display(description='image')
     def get_image(self, instance):
-        return mark_safe(f'<img src="{instance.photo.url}" width="50px" ')
-
+        return mark_safe(f'<img src="{instance.photo.photo.url}" width="50px" ')
 
 
 
 class AtributeAdmin(admin.ModelAdmin):
-    list_display = ("title", "value", "products")
-    list_display_links = ("title", "value", "products")
+    list_display = ("title", "value", "product")
+    list_display_links = ("title", "value", "product")
 
 
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline,]
-    # list_display = ("user")
-    # list_display_links = ("user","ordered_date","shipping_address","payment")
+    list_display = ("user","shipping_address","payment","ordered_date","get_total"  )
+    list_display_links = ("user","shipping_address")
+
+
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("user", "product", "quantity")
-    list_display_links = ("user", "product", "quantity")
+    list_display = ("order", "product", "quantity","get_total_item_price")
+    list_display_links = ("order", "product", "quantity")
 
 
 
