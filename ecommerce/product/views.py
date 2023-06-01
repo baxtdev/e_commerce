@@ -80,7 +80,7 @@ class OrderItemModelViewSet(ModelViewSet):
 class OrderModelViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 # Create your views here.
 

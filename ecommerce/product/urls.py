@@ -16,8 +16,8 @@ router = DefaultRouter()
 
 router.register('category', CategoryModelViewSet)
 router.register('products',ProducteModelViewSet)
-router.register('atributes',AtributeModelViewSet)
-router.register('photos', PhotoModelViewSet)
+# router.register('atributes',AtributeModelViewSet)
+# router.register('photos', PhotoModelViewSet)
 router.register('orderitems', OrderItemModelViewSet)
 router.register('orders', OrderModelViewSet)
 

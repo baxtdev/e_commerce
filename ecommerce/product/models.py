@@ -79,7 +79,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey('Order',on_delete=models.CASCADE, null=True ,related_name='items', verbose_name="Заказы")
     product = models.ForeignKey(Producte, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.IntegerField(default=1, verbose_name='Кол-во товаров', null=False)
-    status = models.CharField(null=True, default='null',max_length=10, choices=STATIT_CHOICE, verbose_name="Статус заказа" )
+    status = models.CharField(null=True, default='АК',max_length=10, choices=STATIT_CHOICE, verbose_name="Статус заказа" )
     
     def __str__(self):
         return f"Кол-во: {self.quantity}, заказ: {self.product.title}, пользователь {self.order.user.username}"
@@ -98,9 +98,9 @@ class OrderItem(models.Model):
 #заказы
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=User, verbose_name='Клиент')
-    ordered_date = models.DateTimeField(verbose_name='Дата ив время заказа')
-    shipping_address = models.CharField(max_length=300, default="Osh", verbose_name='Адрес клиента')
-    payment = models.BooleanField(default=False, verbose_name='Оплата')
+    ordered_date = models.DateTimeField(verbose_name='Дата ив время заказа',auto_now_add=True)
+    shipping_address = models.CharField(max_length=300, verbose_name='Адрес клиента', null=False)
+    payment = models.BooleanField(default=True, verbose_name='Оплата')
     
 
     def __str__(self):

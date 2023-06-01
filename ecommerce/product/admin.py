@@ -107,7 +107,7 @@ class PhotoAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Producte,ProducteAdmin)
 admin.site.register(models.Atribute,AtributeAdmin)
-admin.site.register(models.Category,)
+admin.site.register(models.Category)
 admin.site.register(models.Photo, PhotoAdmin)
 admin.site.register(Order,OrderAdmin )
 admin.site.register(OrderItem, OrderItemAdmin)
