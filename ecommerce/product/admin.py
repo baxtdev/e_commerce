@@ -67,7 +67,7 @@ class OrderItemInline(admin.TabularInline):
 class ProducteAdmin(admin.ModelAdmin):
     inlines=[AtributeInline, PhotoInline ]    
     readonly_fields = ('get_image' ,)
-    list_display = ("title", "category", "user",)#"photo","get_image"
+    list_display = ("title", "category", "user","created_date")#"photo","get_image"
     list_display_links = ("title", "category", "user",)#"photo"
     
     @admin.display(description='image')

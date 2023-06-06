@@ -49,9 +49,7 @@ INSTALLED_APPS = [
     'djoser',
     'knox',
     'corsheaders',
-
-
-    
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

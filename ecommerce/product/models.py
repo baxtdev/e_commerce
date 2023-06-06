@@ -31,7 +31,7 @@ class Producte(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="products", verbose_name="Категория продукта")
     price = models.IntegerField(default=1, verbose_name="Цена продукта")
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, verbose_name="Создатель продукта или автор")
-
+    created_date = models.DateField(auto_now_add=True, verbose_name="Дата созздание продукта")
     def __str__(self) -> str:
             return self.title
     
