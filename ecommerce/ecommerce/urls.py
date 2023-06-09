@@ -26,7 +26,6 @@ from product import views
 urlpatterns = [
     path('api/v1/', include('product.urls')),
     path('admin/', admin.site.urls),
-    path('api/v1/prod-auth/', include('rest_framework.urls')), 
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')), # The CKEditor path
     ]
 

@@ -28,7 +28,7 @@ class RegisterAPI(generics.GenericAPIView):
         })
 
 
-
+#Login API
 class LoginAPI(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
     def post(self, request, format=None):
@@ -46,8 +46,6 @@ class ProducteModelViewSet(ModelViewSet):
     serializer_class = ProducteSerializer
     permission_classes = (IsOwnerOrReadOnly, ) 
 
-    # pagination_class = APIListPagination
-    # authentication_classes = (TokenAuthentication ,) 
 
 
 
@@ -82,14 +80,14 @@ class PhotoModelViewSet(ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-
+#API Cartitem
 class OrderItemModelViewSet(ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-
+#API Basket
 class OrderModelViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
