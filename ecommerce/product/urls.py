@@ -9,17 +9,17 @@ from knox import views as knox_views
 from .views import LoginAPI
 from django.urls import path
 
-# from ecommerce import product
-
-
 router = DefaultRouter()
 
 router.register('category', CategoryModelViewSet)
 router.register('products',ProducteModelViewSet)
-# router.register('atributes',AtributeModelViewSet)
-# router.register('photos', PhotoModelViewSet)
 router.register('orderitems', OrderItemModelViewSet)
 router.register('orders', OrderModelViewSet)
+# router.register('categotyproducts',CategotyProductsModelViewSet)
+# router.register('atributes',AtributeModelViewSet)
+# router.register('photos', PhotoModelViewSet)
+
+
 
 urlpatterns = [
     path('',include(router.urls)),#список api адресов
@@ -30,13 +30,8 @@ urlpatterns = [
     path('auth/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     ]
 
-shoppingpatterns = [
-    path ('shoping/<int:id>/:atribute/', detail_product, name='product-values'),
-    path('shoping_cat/product/<int:id>',detail_category, name='detail-cat' ),
+shoppingpatterns = [    
     path('shopping/all/', all_products, name='all-products'),
-    path('home/',index,name='home'),
-    path('shoping_zakazy/', zakaz, name='zakazy')
-    
 ]
 
 #swagger urls

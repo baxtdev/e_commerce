@@ -5,7 +5,7 @@ from django.shortcuts import render
 from .models import*
 from .serializers import*
 from rest_framework.viewsets import ModelViewSet
-from product.pagination import ProductAPIListPagination
+from product.pagination import APIListPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.contrib.auth import login
 from .permissons import IsOwnerOrReadOnly
@@ -31,7 +31,6 @@ class RegisterAPI(generics.GenericAPIView):
 
 class LoginAPI(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
-
     def post(self, request, format=None):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -41,17 +40,16 @@ class LoginAPI(KnoxLoginView):
 
 
 
-
-
-
 #API Products
 class ProducteModelViewSet(ModelViewSet):
     queryset = Producte.objects.all()
     serializer_class = ProducteSerializer
     permission_classes = (IsOwnerOrReadOnly, ) 
 
-    pagination_class = ProductAPIListPagination
+    # pagination_class = APIListPagination
     # authentication_classes = (TokenAuthentication ,) 
+
+
 
 #API Category
 class CategoryModelViewSet(ModelViewSet):
@@ -60,11 +58,22 @@ class CategoryModelViewSet(ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly, )  
 
 
+
+#prodcuts in category
+class CategotyProductsModelViewSet(ModelViewSet):
+    queryset = Producte.objects.all()
+    serializer_class = CategotyProducts
+    permission_classes = (IsAuthenticatedOrReadOnly, )    
+
+
+
 #API Atribute
 class AtributeModelViewSet(ModelViewSet):
     queryset = Atribute.objects.all()
     serializer_class = AtributeSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, ) 
+
+
 
 #API Photo
 class PhotoModelViewSet(ModelViewSet):
@@ -72,32 +81,23 @@ class PhotoModelViewSet(ModelViewSet):
     serializer_class = PhotoSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
+
+
 class OrderItemModelViewSet(ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
+
+
 
 class OrderModelViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
+
+
 # Create your views here.
-
-
-
-def index(request):
-    product= Producte.objects.all()
-    categoory = Category.objects.all()
-    atribute = Atribute.objects.all()
-    
-    context={
-        'product':product,
-        'categoory': categoory,
-        'atribute':atribute,
-    }
-    return render(request,'index.html',context)
-
 def all_products(request):
     product= Producte.objects.all()
     categoory = Category.objects.all()
@@ -109,43 +109,3 @@ def all_products(request):
         'atribute':atribute,
     }
     return render(request,'all_prod.html',context)
-
-
-#value product
-def detail_product(request, id):
-    product = Producte.objects.get(id=id)
-    atribute = Atribute.objects.all()
-    category = Category.objects.all()
-
-    context = {
-        'product' : product,
-        'atribute' : atribute,
-        'category' : category
-    }
-    return render (request , 'prod_atrib.html', context)
-
-#detail category
-def detail_category(request, id):
-    product = Producte.objects.all()
-    atribute = Atribute.objects.all()
-    category = Category.objects.get(id=id)
-
-    context = {
-        'product' : product,
-        'atribute' : atribute,
-        'category' : category
-    }
-    return render (request , 'category_product.html', context)
-
-def zakaz(request):
-    product = Producte.objects.all()
-    order = Order.objects.all()
-    orderitem = OrderItem.objects.all()
-    context = {
-        'product' : product,
-        'order' : order,
-        'orderitem' : orderitem,
-    }
-    return render(request, 'zakazy.html',context)    
-
-

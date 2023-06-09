@@ -12,6 +12,9 @@ STATIT_CHOICE=[
     ("ЗП", "Запрошено"),
     ("ПЛ", "Получено"),
 ]
+
+
+
 #категоории продукта
 class Category(models.Model):
     title = models.CharField(max_length=200, verbose_name="Название категории")
@@ -22,6 +25,8 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+
+
 
 #сам продукт
 class Producte(models.Model):
@@ -44,6 +49,7 @@ class Producte(models.Model):
         verbose_name_plural = "Продукты"
 
 
+
 #атрибуты продукта
 class Atribute(models.Model):
     title = models.CharField(max_length=150, verbose_name="Атрибут")
@@ -58,11 +64,11 @@ class Atribute(models.Model):
         verbose_name_plural = "Атрибуты"
 
 
+
 #фотографии продукта
 class Photo(models.Model):
     photo = ResizedImageField(upload_to='media/images/', force_format='WEBP', quality=90, verbose_name="Фото продукта")
     product = models.ForeignKey('Producte',on_delete=models.CASCADE, related_name='photos',verbose_name="Продукт")
-
 
     def __str__(self) -> str:
         return self.photo.url
@@ -88,7 +94,6 @@ class OrderItem(models.Model):
     def get_total_item_price(self):
         return self.quantity * self.product.price
     
-    
     class Meta:
         verbose_name = 'Карточка заказа'
         verbose_name_plural = 'Карточка заказов'
@@ -109,7 +114,6 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
-
 
     @property
     def get_total(self):

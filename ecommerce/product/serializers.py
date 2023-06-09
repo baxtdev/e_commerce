@@ -82,9 +82,16 @@ class ProducteSerializer(serializers.ModelSerializer):
         return instance
 
         
+class CategotyProducts(serializers.ModelSerializer):
+    class Meta:
+        model = Producte
+        fields = ('id','title','description','price','category','created_date')
+        
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    # products = CategotyProducts(many=True)
     class Meta:
         model = Category
         fields ="__all__" 
