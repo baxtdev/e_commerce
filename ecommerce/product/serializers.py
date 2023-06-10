@@ -27,12 +27,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ('id','photo', 'product')
+        fields = ('id','photo')
 
 class AtributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Atribute
-        fields = ('id','title', 'value','product',)
+        fields = ('id','title', 'value')
         # ('title','value','products')
 
 #product serializers
@@ -102,7 +102,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ("id","order","product","quantity","status","get_total_item_price")       
+        fields = ("id","product","quantity","get_total_item_price")       
 
 
 
