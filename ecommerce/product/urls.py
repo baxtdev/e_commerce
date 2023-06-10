@@ -13,7 +13,7 @@ router = DefaultRouter()
 
 router.register('category', CategoryModelViewSet)
 router.register('products',ProducteModelViewSet)
-router.register('orderitems', OrderItemModelViewSet)
+# router.register('orderitems', OrderItemModelViewSet)
 router.register('orders', OrderModelViewSet)
 # router.register('categotyproducts',CategotyProductsModelViewSet)
 # router.register('atributes',AtributeModelViewSet)
